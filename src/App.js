@@ -31,7 +31,7 @@ function App() {
     };
 
   return (
-    <div className="App sticky top-0 z-50 bg-teal-600 border border-white flex-col h-screen">
+    <div className="App sticky shadow-md transform top-0 z-50 transition-transform duration-300 ease-in-out flex-col h-screen">
       <div className = "flex items-center">
         <button
           className = "ml-auto absolute justify-center flex items-center w-10 h-10 bg-blue-500 rounded-full shadow-md cursor-pointer text-white font-bold text-xl"
@@ -46,7 +46,9 @@ function App() {
             alt="Image"
           />
         <NavBar />
-      </div>
+        <hr className="w-1/2 mx-auto my-0 border-gray-300" />
+    </div>
+    
       
   <div className="flex">
     <div className={`sidebar ${isOpen ? "w-1/3" : "w-1/3"}`}>
