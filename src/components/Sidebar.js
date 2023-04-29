@@ -22,7 +22,19 @@ const options3 = [
   { value: 'option3', label: 'Generate FAQ' }
   ];
 
-const [selectedOption, setSelectedOption] = React.useState(options1[1]); // pre-selects the second option
+function CustomSelect({id, options, selectedOption, onChange}) {
+  return(
+    <Select 
+      id={id}
+      className="p-2 pt-0 select-component w-full" 
+      options={options}
+      value = {selectedOption}
+      onChange={onChange}
+       />  
+  )
+}
+const [selectedOption, setSelectedOption] = React.useState(options1[0]); // pre-selects the second option
+const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pre-selects the second option
 
   // clean this code up 
   return (
@@ -47,7 +59,13 @@ const [selectedOption, setSelectedOption] = React.useState(options1[1]); // pre-
     </div>
     <div className=" col-span-2 justify-center">
       <label htmlFor="select3" className="text-sm font-semibold text-gray-700 mb-1">Select 3</label>
-      <Select id="select3" className=" p-2 pt-0 select-component w-full" options={options3} />
+      <Select 
+        id="select3" 
+        className=" p-2 pt-0 select-component w-full" 
+        options={options3}
+        value = {selectedOption3}
+        onChange={setSelectedOption3}
+        />
     </div>
     <div className="col-span-2">
       <label htmlFor="uploadBox" className="text-sm font-semibold text-gray-700 mb-1">Upload Box</label>

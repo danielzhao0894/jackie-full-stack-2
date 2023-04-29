@@ -16,8 +16,8 @@ export default function Chat() {
     };
   
     return (
-      <div className="p-6 h-screen flex flex-col justify-end bg-gray-100">
-        <div className="flex-1 flex flex-col justify-end">
+      <div className="m-0 flex flex-col h-full shadow-md transform justify-end bg-#f9f9f9">
+        <div className="flex m-4 flex-col">
           {messages.map((message, i) => (
             <div
               key={i}
@@ -37,7 +37,7 @@ export default function Chat() {
             </div>
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="mt-4">
+        <form onSubmit={handleSubmit} className="m-4">
           <div className="flex items-center">
             <input
               type="text"

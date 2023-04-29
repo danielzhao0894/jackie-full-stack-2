@@ -21,7 +21,6 @@ function App() {
         .then(data => {setCurrentTime(data.time);});
   }, [count]);
 
-  
   function changeCount() {
     setCount(count + 1)
   }
@@ -32,7 +31,7 @@ function App() {
 
   return (
     <div className="App sticky shadow-md transform top-0 z-50 transition-transform duration-300 ease-in-out flex-col h-screen">
-      <div className = "flex items-center">
+      <div className = "flex bg-red-500 bg-#f9f9f9 items-center">
         <button
           className = "ml-auto absolute justify-center flex items-center w-10 h-10 bg-blue-500 rounded-full shadow-md cursor-pointer text-white font-bold text-xl"
           onClick={handleToggle}>
@@ -41,20 +40,14 @@ function App() {
             <path d="M2 5a1 1 0 0 1 1-1h14a1 1 0 0 1 0 2H3a1 1 0 0 1-1-1zm16 5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h14a1 1 0 0 1 1 1zm-8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
             </svg> : "X"}
           </button> 
-          <img className='flex items-center ml-0 w-4 h-4 bg-transparent'
-            src="./public/logo192.png"
-            alt="Image"
-          />
         <NavBar />
-        <hr className="w-1/2 mx-auto my-0 border-gray-300" />
+        <hr className="w-8/9 mx-auto my-auto border-black" />
     </div>
-    
-      
-  <div className="flex">
-    <div className={`sidebar ${isOpen ? "w-1/3" : "w-1/3"}`}>
+  <div className="sidebar flex">
+    <div className={`sidebar m-4 ${isOpen ? "w-1/3" : "w-1/3"}`}>
       <SideBar />
     </div>
-    <div className="flex-1">
+    <div className="flex-1 m-6">
       <Chat />
     </div>
   </div>
