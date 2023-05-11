@@ -38,11 +38,11 @@ const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pr
 
   // clean this code up 
   return (
-<div className="flex-1 p-4 h-full shadow-md transform" style={{zIndex: 50}}>
+<div className="flex-1 p-4 h-full border-2 rounded-lg border-gray-200 transform" style={{zIndex: 50}}>
   <div className="grid grid-cols-2 gap-2 m-2"> 
-    <div className="col-span-2 px-4 py-8">
+    {/* <div className="col-span-2 px-4 py-8">
       <h2 className="mb-4 text-gray-600 hover:text-gray-900 cursor-pointer">Option 5</h2>
-    </div>
+    </div> */}
     <div className="col-span-1">
       <label htmlFor="select1" className="text-sm font-semibold text-gray-700 mb-1">Select language</label>
       <Select 

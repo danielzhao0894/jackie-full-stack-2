@@ -30,8 +30,8 @@ function App() {
     };
 
   return (
-    <div className="App sticky shadow-md transform top-0 z-50 transition-transform duration-300 ease-in-out flex-col h-screen">
-      <div className = "flex bg-red-500 bg-#f9f9f9 items-center">
+    <div className="App sticky transform top-0 z-50 transition-transform duration-300 ease-in-out flex-col h-screen">
+      <div className = "flex m-4 border-b-2 border-gray-200 transform bg-light-gray items-center">
         <button
           className = "ml-auto absolute justify-center flex items-center w-10 h-10 bg-blue-500 rounded-full shadow-md cursor-pointer text-white font-bold text-xl"
           onClick={handleToggle}>
@@ -41,13 +41,14 @@ function App() {
             </svg> : "X"}
           </button> 
         <NavBar />
-        <hr className="w-8/9 mx-auto my-auto border-black" />
+        <hr className="w-8/9border-black" />
     </div>
   <div className="sidebar flex">
     <div className={`sidebar m-4 ${isOpen ? "w-1/3" : "w-1/3"}`}>
+      {/* <p>The current time is {currentTime}</p> */}
       <SideBar />
     </div>
-    <div className="flex-1 m-6">
+    <div className="flex-1 m-4">
       <Chat />
     </div>
   </div>

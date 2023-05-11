@@ -1,10 +1,37 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import insert_into_index from '../api/index_server.py';
 
 function UploadBox(props) {
+
+  const [acceptedFiles, setAcceptedFiles] = useState([]);
+
   const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-  }, []);
+    setAcceptedFiles(acceptedFiles);
+    }, []);
+
+  useEffect(() => {
+    if (acceptedFiles.length > 0) {
+      const formData = new FormData();
+      formData.append("file", acceptedFiles[0]); // Assuming only one file is selected, you can modify it as per your requirements
+  
+      fetch('/uploadFile', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('File uploaded successfully!');
+        } else {
+          throw new Error('Error uploading file');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  }, [acceptedFiles]);
+  
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NonceProvider } from 'react-select';
 
 export default function Chat() {
     const [messages, setMessages] = useState([
@@ -8,35 +9,87 @@ export default function Chat() {
       },
     ]);
     const [newMessage, setNewMessage] = useState("");
-  
-    const handleSubmit = (e) => {
+    const [chatGptResponse, setChatGptResponse] = useState("");
+
+    function handleSubmit(e) {
+      
+      console.log("handleSubmit ran")
+
       e.preventDefault();
-      setMessages([...messages, { sender: "You", message: newMessage }]);
+
+      setMessages((prevMessages) => {
+        return [...prevMessages, { sender: "You", message: newMessage }];
+      });
+
+      console.log("New Message: " + newMessage)
+      console.log("is somebody out there?")
+
+      fetch(`/query?text=${newMessage}`, {
+        method: 'GET',
+        headers: {
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('File uploaded successfully!');
+          return response.json();
+        } else {
+          throw new Error('Error uploading file');
+        }
+      })
+      .then(data => {
+        setChatGptResponse(data.text);
+        console.log("ChatGPT Response: " + data.text);
+        console.log("New Message: " + newMessage);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        console.log("Error uploading file")
+        throw error;
+      });
+      
+      console.log("New Message: " + newMessage)
+      console.log("ChatGPT Response: " + chatGptResponse)
+/* 
+      setMessages((prevMessages) => {
+        return [...prevMessages, { sender: "ChatGPT", message: chatGptResponse }];
+      }); */
+
       setNewMessage("");
-    };
-  
+      // setChatGptResponse("");
+    }
+
+    useEffect(() => {
+      console.log("UseEffect ran")
+      setMessages((prevMessages) => {
+        return [
+          ...prevMessages, 
+          { sender: "ChatGPT", message: chatGptResponse }];
+      });
+    }, [chatGptResponse]);
+      
+
+
     return (
-      <div className="m-0 flex flex-col h-full shadow-md transform justify-end bg-#f9f9f9">
-        <div className="flex m-4 flex-col">
-          {messages.map((message, i) => (
-            <div
-              key={i}
-              className={`flex ${
-                message.sender === "You" ? "justify-end" : "justify-start"
-              } mb-4`}
+      <div className="m-0 flex flex-col h-full rounded-lg border-2 border-gray-200 justify-end bg-#f9f9f9">
+        `<div className="flex m-4 flex-col">
+        {messages.map((message, i) => (
+          <div 
+            key={i} 
+            className={`flex ${message.sender === "You" ? "justify-end" : "justify-start"} mb-4 ${message.sender !== "You" ? "items-start": "items-end"
+          }`}
+        >
+          <div 
+            className={`p-2 rounded-lg ${message.sender === "You" ? "bg-blue-500 text-white" : "bg-white text-gray-900"}`}
+            style={{ justifyContent: message.sender === "You" ? "flex-end" : "flex-start" }}
             >
-              <div
-                className={`p-2 rounded-lg ${
-                  message.sender === "You"
-                    ? "bg-blue-500 text-white"
-                    : "bg-white text-gray-900"
-                }`}
-              >
-                {message.message}
-              </div>
+              {message.message}
             </div>
-          ))}
-        </div>
+          </div>
+          ))
+        }
+
+        </div>`
         <form onSubmit={handleSubmit} className="m-4">
           <div className="flex items-center">
             <input
