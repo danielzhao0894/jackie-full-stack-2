@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Kill any existing processes on ports 5602 and 5000
-kill $(lsof -t -i:5602) 2> /dev/null
+# Kill any existing processes on ports 3000 and 5000
+kill $(lsof -t -i:3000) 2> /dev/null
 kill $(lsof -t -i:5000) 2> /dev/null
+kill $(lsof -t -i:5602) 2> /dev/null
 
 # start backend index server
 source venv/bin/activate
@@ -11,7 +12,7 @@ python index_server.py &
 echo "index_server running..."
 
 # wait for the server to start - if creating a brand new huge index, on startup, increase this further
-sleep 10
+sleep 5
 
 # start the flask server
 python api.py &

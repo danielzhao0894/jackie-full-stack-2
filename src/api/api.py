@@ -7,6 +7,7 @@ from multiprocessing import Lock
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
+
 # from index_server import initialize_index, query_index, insert_into_index, get_documents_list
 
 app = Flask(__name__)
@@ -55,14 +56,16 @@ def query_index():
     print("is this still printing?")
     return make_response(jsonify(response_json)), 200
 
+filepath = None
 
 @app.route("/uploadFile", methods=["POST"])
 def upload_file():
     global manager
+    global filepath
+
     if 'file' not in request.files:
         return "Please send a POST request with a file", 400
     
-    filepath = None
     try:
         uploaded_file = request.files["file"]
         filename = secure_filename(uploaded_file.filename)
@@ -72,11 +75,9 @@ def upload_file():
 
         if request.form.get("filename_as_doc_id", None) is not None:
             print("filename_as_doc_id: {}".format(filename))
-            print("if block")
             manager.insert_into_index(filepath, doc_id=filename)
         else:
             print("filename_as_doc_id: {}".format(filename))
-            print("else block")
             manager.insert_into_index(filepath)
     except Exception as e:
         # cleanup temp file
@@ -93,9 +94,17 @@ def upload_file():
 
 @app.route("/getDocuments", methods=["GET"])
 def get_documents():
-    document_list = get_documents_list()
-
+    global manager
+    document_list = manager.get_documents_list()._getvalue()
     return make_response(jsonify(document_list)), 200
+
+@app.route("/getFilePath", methods=["GET"])
+def get_file_path():
+    global filepath
+    if filepath is not None:
+        return filepath, 200
+    else:
+        return "No file uploaded yet", 404
     
 
 @app.route("/")

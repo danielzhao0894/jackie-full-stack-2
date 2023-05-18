@@ -2,12 +2,17 @@ import os
 import pickle
 from multiprocessing import Lock
 from multiprocessing.managers import BaseManager
-from llama_index import SimpleDirectoryReader, GPTSimpleVectorIndex, Document, ServiceContext
+from llama_index import SimpleDirectoryReader, GPTSimpleVectorIndex, GPTVectorStoreIndex, Document, ServiceContext
+# from llama_index.storage.index_store import SimpleDocumentStore
+# from llama_index import StorageContext
+# from llama_index import load_index_from_storage
+
 
 index = None
 stored_docs = {}
 lock = Lock()
 
+persist_dir = './'
 index_name = "./index.json"
 pkl_name = "stored_documents.pkl"
 
@@ -18,13 +23,20 @@ def initialize_index():
     print("initialize_index function running")
     
     service_context = ServiceContext.from_defaults(chunk_size_limit=512)
+
     with lock:
         if os.path.exists(index_name):
             index = GPTSimpleVectorIndex.load_from_disk(index_name, service_context=service_context)
+            # rebuild storage context
+            # storage_context = StorageContext.from_defaults(persist_dir=index_name)
+            # index = load_index_from_storage(service_context=service_context)
+
             # print("index size: {}".format(index.size))
+            # SimpleDocumentStore.from_persist_path(index_name)
         else:
             index = GPTSimpleVectorIndex([], service_context=service_context)
             index.save_to_disk(index_name)
+            # index.storage_context.persist(persist_dir=persist_dir)
             # print("index size: {}".format(index.size))
         if os.path.exists(pkl_name):
             with open(pkl_name, "rb") as f:
@@ -41,15 +53,11 @@ def query_index(query_text):
 def insert_into_index(doc_file_path, doc_id=None):
     """Insert new document into global index."""
     global index, stored_docs
-    print("insert_into_index function running")
-    print("doc_file_path: {}".format(doc_file_path))
     document = SimpleDirectoryReader(input_files=[doc_file_path]).load_data()[0]
-    print("document: {}".format(document))
     if doc_id is not None:
         document.doc_id = doc_id
 
     print("inserting document: {}".format(document.doc_id))
-    print(index)
 
     with lock:
         # Keep track of stored docs -- llama_index doesn't make this easy

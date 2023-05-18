@@ -5,14 +5,18 @@ import NavBar from "./components/Nav.js"
 import SideBar from "./components/Sidebar.js"
 import Chat from "./components/Chat.js"
 import ReactDOM from 'react-dom/client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SearchResults from './components/SearchResults.js';
+import UploadBox from './components/Upload';
+import Preview from './components/Preview';
+import { useDropzone } from "react-dropzone";
 
 function App() {
   
   const [currentTime, setCurrentTime] = React.useState(0);
   const [count, setCount] = React.useState(0)
   const [isOpen, setIsOpen] = React.useState(true);
+  const [acceptedFiles, setAcceptedFiles] = useState([]);
   
   useEffect(() => {
     console.log("Effect ran")
@@ -23,38 +27,59 @@ function App() {
 
   function changeCount() {
     setCount(count + 1)
-  }
+    }
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
     };
 
-  return (
-    <div className="App sticky transform top-0 z-50 transition-transform duration-300 ease-in-out flex-col h-screen">
-      <div className = "flex m-4 border-b-2 border-gray-200 transform bg-light-gray items-center">
-        <button
-          className = "ml-auto absolute justify-center flex items-center w-10 h-10 bg-blue-500 rounded-full shadow-md cursor-pointer text-white font-bold text-xl"
-          onClick={handleToggle}>
-          {isOpen ?  
-            <svg className="w-6 h-6 text-white fill-current" viewBox="0 0 20 20">
-            <path d="M2 5a1 1 0 0 1 1-1h14a1 1 0 0 1 0 2H3a1 1 0 0 1-1-1zm16 5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h14a1 1 0 0 1 1 1zm-8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-            </svg> : "X"}
-          </button> 
-        <NavBar />
-        <hr className="w-8/9border-black" />
-    </div>
-  <div className="sidebar flex">
-    <div className={`sidebar m-4 ${isOpen ? "w-1/3" : "w-1/3"}`}>
-      {/* <p>The current time is {currentTime}</p> */}
-      <SideBar />
-    </div>
-    <div className="flex-1 m-4">
-      <Chat />
-    </div>
-  </div>
-</div>
-
-  );
+  const handleAcceptedFiles = useCallback((acceptedFiles) => {
+    console.log("handleAcceptedFiles ran")
+    setAcceptedFiles(acceptedFiles);
+    }, []);
+  
+  useEffect(() => {
+    if (acceptedFiles.length > 0) {
+      const formData = new FormData();
+      formData.append("file", acceptedFiles[0]); // Assuming only one file is selected, you can modify it as per your requirements
+    
+    fetch('/uploadFile', {
+      method: 'POST',
+      body: formData
+      })
+      
+    .then(response => {
+        if (response.ok) {
+          console.log('File uploaded successfully!');
+      } else {
+        throw new Error('Error uploading file');
+      }})
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+    }, [acceptedFiles]);
+    
+    return (
+      <div className="App">
+        <NavBar isOpen={isOpen} handleToggle={handleToggle} />
+        <div className="content flex border-0">
+          <div className={`sidebar m-0 ${isOpen ? "w-1/2" : "w-1/5"} p-0 border-0 border-gray-200 rounded-lg transform`} style={{ zIndex: 50 }}>
+            <SideBar />
+            <UploadBox acceptedFiles={acceptedFiles} handleAcceptedFiles={handleAcceptedFiles} />
+            <div className="flex items-center justify-center">
+              {/* Submit button */}
+            </div>
+          </div>
+          <div className="flex-initial mb-8 overflow-auto">
+            <Chat acceptedFiles={acceptedFiles} />
+          </div>
+        </div>
+      </div>
+    );
+    
+    
+    
 }
 
 export default App;

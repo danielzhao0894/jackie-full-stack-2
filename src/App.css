@@ -1,6 +1,12 @@
 .App {
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: #FFFFFF;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  overflow: auto;
 }
 
 .container {
@@ -10,11 +16,12 @@
 }
 
 .sidebar {
-  background-color: #f9f9f9;
+  background-color: #FFFFFF;
 }
 
 .chatbot {
   width: 100%;
+  text-align: left;
 }
 
 .App-logo {

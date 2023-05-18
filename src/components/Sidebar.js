@@ -38,12 +38,12 @@ const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pr
 
   // clean this code up 
   return (
-<div className="flex-1 p-4 h-full border-2 rounded-lg border-gray-200 transform" style={{zIndex: 50}}>
-  <div className="grid grid-cols-2 gap-2 m-2"> 
+<div className="flex-1 p-2" style={{zIndex: 50}}>
+  <div className="grid grid-cols-2 gap-1 m-1"> 
     {/* <div className="col-span-2 px-4 py-8">
       <h2 className="mb-4 text-gray-600 hover:text-gray-900 cursor-pointer">Option 5</h2>
     </div> */}
-    <div className="col-span-1">
+    <div className="col-span-2 justify-center">
       <label htmlFor="select1" className="text-sm font-semibold text-gray-700 mb-1">Select language</label>
       <Select 
         id="select1" 
@@ -53,12 +53,12 @@ const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pr
         onChange={setSelectedOption}
       />
     </div>
-    <div className="col-span-1">
+    {/* <div className="col-span-1">
       <label htmlFor="select2" className="text-sm font-semibold text-gray-700 mb-1">Select 2</label>
       <Select id="select2" className="p-2 pt-0 select-component w-full" options={options} />
-    </div>
+    </div> */}
     <div className=" col-span-2 justify-center">
-      <label htmlFor="select3" className="text-sm font-semibold text-gray-700 mb-1">Select 3</label>
+      <label htmlFor="select3" className="text-sm font-semibold text-gray-700 mb-1">Select use case</label>
       <Select 
         id="select3" 
         className=" p-2 pt-0 select-component w-full" 
@@ -67,25 +67,14 @@ const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pr
         onChange={setSelectedOption3}
         />
     </div>
-    <div className="col-span-2">
-      <label htmlFor="uploadBox" className="text-sm font-semibold text-gray-700 mb-1">Upload Box</label>
-      <UploadBox id="uploadBox" className=" p-2 pt-0 w-full" />
-    </div>
-    <div className="col-span-1">
+    {/* <div className="col-span-1">
       <label htmlFor="select4" className="text-sm font-semibold text-gray-700 mb-1">Select 4</label>
       <Select id="select4" className=" p-2 pt-0 select-component w-full" options={options} />
-    </div>
-    <div className="col-span-1">
+    </div> */}
+    {/* <div className="col-span-1">
       <label htmlFor="select5" className="text-sm font-semibold text-gray-700 mb-1">Select 5</label>
       <Select id="select5" className=" p-2 pt-0 select-component w-full" options={options} />
-    </div>
-    <div className="col-span-2">
-      <button
-        type="submit"
-        className=" p-4 w-full rounded-lg bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 transition-colors focus:outline-none focus:ring focus:border-blue-300">
-        Submit
-      </button>
-    </div>
+    </div> */}
   </div>
 </div>
 
