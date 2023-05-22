@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import UploadBox from './Upload.js';
+import axios from 'axios';
 
-export default function SideBar() {
+export default function SideBar(props) {
 
 const options = [
   { value: 'option1', label: 'English' },
@@ -21,20 +22,27 @@ const options3 = [
   { value: 'option2', label: 'Ask Chatbot about health insurance' },
   { value: 'option3', label: 'Generate FAQ' }
   ];
+  
+/* const options4 = props.indexOptions.keys.map((key) => {
+  return({value: key, label: key})
+  }); */
 
-function CustomSelect({id, options, selectedOption, onChange}) {
-  return(
-    <Select 
-      id={id}
-      className="p-2 pt-0 select-component w-full" 
-      options={options}
-      value = {selectedOption}
-      onChange={onChange}
-       />  
-  )
-}
+  function CustomSelect(id = '', options = [], selectedOption = '', onChange = () => {}, onClick = () => {}) {
+    return (
+      <Select 
+        id={id}
+        className="p-2 pt-0 select-component w-full" 
+        options={options}
+        value={selectedOption}
+        onChange={onChange}
+        onClick={onClick}
+      />
+    );
+  }
+  
 const [selectedOption, setSelectedOption] = React.useState(options1[0]); // pre-selects the second option
 const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pre-selects the second option
+// const [selectedOption4, setSelectedOption4] = React.useState(options4[0]); // pre-selects the second option
 
   // clean this code up 
   return (
@@ -67,6 +75,18 @@ const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pr
         onChange={setSelectedOption3}
         />
     </div>
+    <div className=" col-span-2 justify-center">
+      <label htmlFor="select4" className="text-sm font-semibold text-gray-700 mb-1">Select document</label>
+    </div>
+
+    <div className="col-span-2 justify-center">
+      <Select 
+        id="select4" 
+        className=" p-2 pt-0 select-component w-full"
+        options={options3}
+      />
+      {/* <p>{JSON.stringify(props.indexOptions)}</p> */}
+    </div>
     {/* <div className="col-span-1">
       <label htmlFor="select4" className="text-sm font-semibold text-gray-700 mb-1">Select 4</label>
       <Select id="select4" className=" p-2 pt-0 select-component w-full" options={options} />
@@ -80,3 +100,8 @@ const [selectedOption3, setSelectedOption3] = React.useState(options3[0]); // pr
 
   );
 };
+
+
+
+// for each string in the array, dynamically create a new option
+
